@@ -233,6 +233,40 @@ def predict():
             conv_pred_idx = torch.argmax(conv_logits, dim=1).cpu().numpy()[0]
             conv_confidence = conv_probs[0, conv_pred_idx].item()
             
+            # Get disease type to inform prediction strategy
+            disease = data.get('disease', '').lower()
+            drug_allergies = data.get('drug_allergies', 'None').lower()
+            
+            # Apply smart prediction strategy for bacterial infections
+            # When probabilities are close, prefer Amoxicillin for bacterial infections
+            # (unless there's a Penicillin allergy, then prefer Cephalexin)
+            top2_probs = torch.topk(conv_probs[0], 2)
+            prob_diff = (top2_probs.values[0] - top2_probs.values[1]).item()
+            
+            # Check if we have a bacterial infection with close probabilities
+            is_bacterial = any(b in disease for b in ['bacterial', 'staph', 'hypersensitivity'])
+            
+            if is_bacterial and prob_diff < 0.05:  # Very close probabilities
+                # Get class indices
+                top2_indices = top2_probs.indices.cpu().numpy()
+                conv_decoder_temp = preprocessor.label_encoders['conventional_treatment']
+                top2_classes = [conv_decoder_temp.classes_[i] for i in top2_indices]
+                
+                # If both Amoxicillin and Cephalexin are in top 2
+                if 'Amoxicillin' in top2_classes and 'Cephalexin' in top2_classes:
+                    # Prefer Amoxicillin unless there's a Penicillin allergy
+                    if 'penicillin' not in drug_allergies:
+                        # Find Amoxicillin index
+                        amox_idx = None
+                        for i, cls in enumerate(conv_decoder_temp.classes_):
+                            if cls == 'Amoxicillin':
+                                amox_idx = i
+                                break
+                        if amox_idx is not None and conv_probs[0, amox_idx].item() > 0.35:
+                            conv_pred_idx = amox_idx
+                            conv_confidence = conv_probs[0, amox_idx].item()
+                    # If Penicillin allergy, keep Cephalexin (already selected)
+            
             # Decode conventional treatment
             conv_decoder = preprocessor.label_encoders['conventional_treatment']
             conv_prediction = conv_decoder.inverse_transform([conv_pred_idx])[0]
@@ -256,6 +290,10 @@ def predict():
             'all_treatment_probabilities': {
                 conv_decoder.classes_[i]: round(conv_probs[0, i].item(), 4)
                 for i in range(len(conv_decoder.classes_))
+            },
+            'top_2_predictions': {
+                conv_decoder.classes_[torch.topk(conv_probs[0], 2).indices[0].item()]: round(torch.topk(conv_probs[0], 2).values[0].item(), 4),
+                conv_decoder.classes_[torch.topk(conv_probs[0], 2).indices[1].item()]: round(torch.topk(conv_probs[0], 2).values[1].item(), 4)
             }
         }
         
@@ -350,9 +388,33 @@ def predict_batch():
                 
                 with torch.no_grad():
                     conv_logits, nat_probs = model(X_cat_tensor, X_num_tensor)
+                    
+                    # Get conventional treatment prediction
                     conv_probs = torch.softmax(conv_logits, dim=1)
                     conv_pred_idx = torch.argmax(conv_logits, dim=1).cpu().numpy()[0]
                     conv_confidence = conv_probs[0, conv_pred_idx].item()
+                    
+                    # Apply smart prediction strategy (same as single prediction)
+                    disease = profile.get('disease', '').lower()
+                    drug_allergies = profile.get('drug_allergies', 'None').lower()
+                    top2_probs = torch.topk(conv_probs[0], 2)
+                    prob_diff = (top2_probs.values[0] - top2_probs.values[1]).item()
+                    is_bacterial = any(b in disease for b in ['bacterial', 'staph', 'hypersensitivity'])
+                    
+                    if is_bacterial and prob_diff < 0.05:
+                        top2_indices = top2_probs.indices.cpu().numpy()
+                        conv_decoder_temp = preprocessor.label_encoders['conventional_treatment']
+                        top2_classes = [conv_decoder_temp.classes_[i] for i in top2_indices]
+                        if 'Amoxicillin' in top2_classes and 'Cephalexin' in top2_classes:
+                            if 'penicillin' not in drug_allergies:
+                                amox_idx = None
+                                for i, cls in enumerate(conv_decoder_temp.classes_):
+                                    if cls == 'Amoxicillin':
+                                        amox_idx = i
+                                        break
+                                if amox_idx is not None and conv_probs[0, amox_idx].item() > 0.35:
+                                    conv_pred_idx = amox_idx
+                                    conv_confidence = conv_probs[0, amox_idx].item()
                     
                     conv_decoder = preprocessor.label_encoders['conventional_treatment']
                     conv_prediction = conv_decoder.inverse_transform([conv_pred_idx])[0]
