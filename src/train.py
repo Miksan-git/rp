@@ -270,7 +270,8 @@ def main():
         natural_class_weights=natural_class_weights,
         use_focal_loss=config['training'].get('use_focal_loss', True),
         focal_gamma=config['training'].get('focal_gamma', 2.0),
-        label_smoothing=config['training'].get('label_smoothing', 0.0)
+        label_smoothing=config['training'].get('label_smoothing', 0.0),
+        natural_label_smoothing=config['training'].get('natural_label_smoothing', 0.0)
     )
     
     # Optimizer

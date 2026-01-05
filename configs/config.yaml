@@ -46,8 +46,8 @@ model:
     hidden_dim: 128
     dropout: 0.3
   natural_head:
-    hidden_dim: 64
-    dropout: 0.2
+    hidden_dim: 16
+    dropout: 0.6
 training:
   batch_size: 128
   num_epochs: 100
@@ -59,8 +59,9 @@ training:
   use_focal_loss: true
   focal_gamma: 5.0
   label_smoothing: 0.1
+  natural_label_smoothing: 0.12
   conventional_loss_weight: 5.0
-  natural_loss_weight: 1.0
+  natural_loss_weight: 0.3
 evaluation:
   metrics:
     conventional:

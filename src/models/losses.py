@@ -29,7 +29,8 @@ class MultiTaskLoss(nn.Module):
         natural_class_weights: torch.Tensor = None,
         use_focal_loss: bool = True,
         focal_gamma: float = 2.0,
-        label_smoothing: float = 0.0
+        label_smoothing: float = 0.0,
+        natural_label_smoothing: float = 0.0
     ):
         """
         Initialize multi-task loss.
@@ -47,6 +48,7 @@ class MultiTaskLoss(nn.Module):
         
         self.conventional_weight = conventional_weight
         self.natural_weight = natural_weight
+        self.natural_label_smoothing = natural_label_smoothing
         
         # Loss functions - Use Focal Loss for better handling of class imbalance
         if use_focal_loss:
@@ -100,15 +102,22 @@ class MultiTaskLoss(nn.Module):
         # Compute losses
         loss_conv = self.conventional_loss(conventional_logits, conventional_target)
         
+        # Apply label smoothing to natural remedies targets if specified
+        if self.natural_label_smoothing > 0:
+            # Smooth labels: 1 -> (1 - smoothing), 0 -> smoothing
+            natural_target_smooth = natural_target * (1 - 2 * self.natural_label_smoothing) + self.natural_label_smoothing
+        else:
+            natural_target_smooth = natural_target
+        
         # For natural remedies: if using class weights, convert probs to logits
         if self.use_logits_for_natural:
             # Convert probabilities back to logits for BCEWithLogitsLoss
             eps = 1e-8
             natural_logits = torch.log(natural_probs + eps) - torch.log(1 - natural_probs + eps)
-            loss_nat = self.natural_loss(natural_logits, natural_target)
+            loss_nat = self.natural_loss(natural_logits, natural_target_smooth)
         else:
             # BCELoss expects probabilities (sigmoid already applied)
-            loss_nat = self.natural_loss(natural_probs, natural_target)
+            loss_nat = self.natural_loss(natural_probs, natural_target_smooth)
         
         # Combined loss
         total_loss = self.conventional_weight * loss_conv + self.natural_weight * loss_nat

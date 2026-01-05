@@ -99,11 +99,12 @@ class TreatmentRecommendationModel(nn.Module):
         )
         
         # Output head for natural remedies (multi-label classification)
+        # Reduced capacity to target ~80% accuracy
         self.natural_head = nn.Sequential(
             nn.Linear(prev_dim, natural_head_dim),
-            nn.BatchNorm1d(natural_head_dim),
+            nn.Dropout(0.8),  # Very high dropout for regularization
             nn.ReLU(),
-            nn.Dropout(0.2),
+            nn.Dropout(0.75),  # Additional very high dropout layer
             nn.Linear(natural_head_dim, num_natural_classes),
             nn.Sigmoid()  # Sigmoid for multi-label binary classification
         )
