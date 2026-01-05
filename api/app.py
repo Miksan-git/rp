@@ -44,14 +44,27 @@ def load_model():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"Using device: {device}")
     
-    # Load preprocessor
-    preprocessor_path = os.path.join(
+    # Load preprocessor - try latest first, then fallback
+    preprocessor_path_latest = os.path.join(
         os.path.dirname(__file__), '..', 
         config['paths']['model_save_dir'], 
         'preprocessor.pkl'
     )
+    preprocessor_path_enhanced = os.path.join(
+        os.path.dirname(__file__), '..', 
+        config['paths']['model_save_dir'], 
+        'preprocessor_enhanced.pkl'
+    )
+    
     preprocessor = DataPreprocessor(config_path=config_path)
-    preprocessor.load_preprocessor(preprocessor_path)
+    if os.path.exists(preprocessor_path_latest):
+        preprocessor.load_preprocessor(preprocessor_path_latest)
+        print(f"Preprocessor loaded from: {preprocessor_path_latest}")
+    elif os.path.exists(preprocessor_path_enhanced):
+        preprocessor.load_preprocessor(preprocessor_path_enhanced)
+        print(f"Preprocessor loaded from: {preprocessor_path_enhanced}")
+    else:
+        raise FileNotFoundError(f"Preprocessor not found")
     print("Preprocessor loaded successfully")
     
     # Create model
@@ -73,12 +86,15 @@ def load_model():
         config
     )
     
-    # Load model weights
+    # Load model weights - use latest model
     model_path = os.path.join(
         os.path.dirname(__file__), '..',
         config['paths']['model_save_dir'],
         'best_model.pth'
     )
+    if not os.path.exists(model_path):
+        raise FileNotFoundError(f"Model not found at {model_path}")
+    print(f"Loading model from: {model_path}")
     checkpoint = torch.load(model_path, map_location=device)
     model.load_state_dict(checkpoint['model_state_dict'])
     model.to(device)
@@ -157,7 +173,7 @@ def predict():
                 'error': f'Missing required fields: {", ".join(missing_fields)}'
             }), 400
         
-        # Create DataFrame from input
+        # Create DataFrame from input with required fields
         input_dict = {
             'Breed': [data['breed']],
             'Age': [float(data['age'])],
@@ -174,6 +190,29 @@ def predict():
             'Disease': [data['disease']],
             'Stage': [data['stage']]
         }
+        
+        # Add optional enhanced features with defaults if not provided
+        optional_numerical = {
+            'Severity Score': data.get('severity_score', 50.0),  # Default: moderate severity
+            'Symptom Count': data.get('symptom_count', 5),  # Default: average symptoms
+            'Treatments Tried Count': data.get('treatments_tried_count', 0)  # Default: no previous treatments
+        }
+        
+        optional_categorical = {
+            'Previous Treatment': data.get('previous_treatment', 'None'),
+            'Previous Treatment Response': data.get('previous_treatment_response', 'None'),
+            'Drug Allergies': data.get('drug_allergies', 'None'),
+            'Drug Interaction Risk': data.get('drug_interaction_risk', 'Low'),
+            'Cost Category': data.get('cost_category', 'Moderate'),
+            'Availability Status': data.get('availability_status', 'In Stock')
+        }
+        
+        # Add optional features to input_dict
+        for key, value in optional_numerical.items():
+            input_dict[key] = [float(value)]
+        
+        for key, value in optional_categorical.items():
+            input_dict[key] = [str(value)]
         
         input_df = pd.DataFrame(input_dict)
         
@@ -261,7 +300,7 @@ def predict_batch():
         
         for profile in profiles:
             try:
-                # Create DataFrame
+                # Create DataFrame with required fields
                 input_dict = {
                     'Breed': [profile['breed']],
                     'Age': [float(profile['age'])],
@@ -278,6 +317,29 @@ def predict_batch():
                     'Disease': [profile['disease']],
                     'Stage': [profile['stage']]
                 }
+                
+                # Add optional enhanced features with defaults if not provided
+                optional_numerical = {
+                    'Severity Score': profile.get('severity_score', 50.0),
+                    'Symptom Count': profile.get('symptom_count', 5),
+                    'Treatments Tried Count': profile.get('treatments_tried_count', 0)
+                }
+                
+                optional_categorical = {
+                    'Previous Treatment': profile.get('previous_treatment', 'None'),
+                    'Previous Treatment Response': profile.get('previous_treatment_response', 'None'),
+                    'Drug Allergies': profile.get('drug_allergies', 'None'),
+                    'Drug Interaction Risk': profile.get('drug_interaction_risk', 'Low'),
+                    'Cost Category': profile.get('cost_category', 'Moderate'),
+                    'Availability Status': profile.get('availability_status', 'In Stock')
+                }
+                
+                # Add optional features
+                for key, value in optional_numerical.items():
+                    input_dict[key] = [float(value)]
+                
+                for key, value in optional_categorical.items():
+                    input_dict[key] = [str(value)]
                 
                 input_df = pd.DataFrame(input_dict)
                 input_clean = preprocessor.clean_data(input_df)
