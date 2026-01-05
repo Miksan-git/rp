@@ -1,0 +1,301 @@
+{
+  "test_requests": [
+    {
+      "name": "Chihuahua - Severe Allergic Dermatosis",
+      "description": "Small dog with severe allergic condition",
+      "request": {
+        "breed": "Chihuahua",
+        "age": 6,
+        "weight": 2.8,
+        "medical_history": "None",
+        "genetic_predispositions": "None",
+        "current_medications": "None",
+        "diet": "Balanced",
+        "lifestyle": "Indoor",
+        "environment": "Temperate",
+        "vaccination_status": "Not Up-to-date",
+        "neutering_status": "Neutered",
+        "living_conditions": "Multi-pet",
+        "disease": "Hypersensitivity Allergic Dermatosis",
+        "stage": "Severe"
+      }
+    },
+    {
+      "name": "Labrador - Fungal Infection Initial",
+      "description": "Large active dog with early fungal infection",
+      "request": {
+        "breed": "Labrador",
+        "age": 5,
+        "weight": 25.0,
+        "medical_history": "Skin allergies",
+        "genetic_predispositions": "Dermatitis",
+        "current_medications": "None",
+        "diet": "Grain-free",
+        "lifestyle": "Active",
+        "environment": "Temperate",
+        "vaccination_status": "Up-to-date",
+        "neutering_status": "Neutered",
+        "living_conditions": "Single-pet",
+        "disease": "Fungal Infections",
+        "stage": "Initial"
+      }
+    },
+    {
+      "name": "German Shepherd - Staph Infection Moderate",
+      "description": "Working dog with moderate bacterial infection",
+      "request": {
+        "breed": "German Shepherd",
+        "age": 8,
+        "weight": 30.0,
+        "medical_history": "Eye infections",
+        "genetic_predispositions": "None",
+        "current_medications": "Heartworm Preventative",
+        "diet": "High-protein",
+        "lifestyle": "Outdoor",
+        "environment": "Cold",
+        "vaccination_status": "Up-to-date",
+        "neutering_status": "Not Neutered",
+        "living_conditions": "Multi-pet",
+        "disease": "Staph Infection",
+        "stage": "Moderate"
+      }
+    },
+    {
+      "name": "Poodle - Bacterial Dermatosis Mild",
+      "description": "Small breed with mild bacterial skin condition",
+      "request": {
+        "breed": "Poodle",
+        "age": 3,
+        "weight": 12.0,
+        "medical_history": "Allergy to Penicillin",
+        "genetic_predispositions": "Fungal susceptibility",
+        "current_medications": "Antihistamines",
+        "diet": "Hypoallergenic",
+        "lifestyle": "Indoor",
+        "environment": "Humid",
+        "vaccination_status": "Up-to-date",
+        "neutering_status": "Neutered",
+        "living_conditions": "Single-pet",
+        "disease": "Bacterial Dermatosis",
+        "stage": "Mild"
+      }
+    },
+    {
+      "name": "Golden Retriever - Severe Fungal Infection",
+      "description": "Large breed with severe fungal infection",
+      "request": {
+        "breed": "Golden Retriever",
+        "age": 7,
+        "weight": 28.0,
+        "medical_history": "Skin allergies",
+        "genetic_predispositions": "Fungal susceptibility",
+        "current_medications": "Beta-blockers",
+        "diet": "Grain-free",
+        "lifestyle": "Active",
+        "environment": "Wet",
+        "vaccination_status": "Not Up-to-date",
+        "neutering_status": "Neutered",
+        "living_conditions": "Multi-pet",
+        "disease": "Fungal Infections",
+        "stage": "Severe"
+      }
+    },
+    {
+      "name": "Beagle - Initial Staph Infection",
+      "description": "Medium breed with early bacterial infection",
+      "request": {
+        "breed": "Beagle",
+        "age": 4,
+        "weight": 15.0,
+        "medical_history": "None",
+        "genetic_predispositions": "Dermatitis",
+        "current_medications": "None",
+        "diet": "Balanced",
+        "lifestyle": "Active",
+        "environment": "Temperate",
+        "vaccination_status": "Up-to-date",
+        "neutering_status": "Not Neutered",
+        "living_conditions": "Single-pet",
+        "disease": "Staph Infection",
+        "stage": "Initial"
+      }
+    },
+    {
+      "name": "Bulldog - Moderate Allergic Dermatosis",
+      "description": "Brachycephalic breed with moderate allergies",
+      "request": {
+        "breed": "Bulldog",
+        "age": 6,
+        "weight": 22.0,
+        "medical_history": "Skin allergies",
+        "genetic_predispositions": "Dermatitis",
+        "current_medications": "Insulin",
+        "diet": "Low-sodium",
+        "lifestyle": "Indoor",
+        "environment": "Tropical",
+        "vaccination_status": "Up-to-date",
+        "neutering_status": "Neutered",
+        "living_conditions": "Single-pet",
+        "disease": "Hypersensitivity Allergic Dermatosis",
+        "stage": "Moderate"
+      }
+    },
+    {
+      "name": "Dachshund - Severe Bacterial Dermatosis",
+      "description": "Small long-bodied breed with severe bacterial infection",
+      "request": {
+        "breed": "Dachshund",
+        "age": 9,
+        "weight": 8.0,
+        "medical_history": "Eye infections",
+        "genetic_predispositions": "Fungal susceptibility",
+        "current_medications": "Heartworm Preventative",
+        "diet": "Grain-free",
+        "lifestyle": "Indoor",
+        "environment": "Dry",
+        "vaccination_status": "Not Up-to-date",
+        "neutering_status": "Neutered",
+        "living_conditions": "Multi-pet",
+        "disease": "Bacterial Dermatosis",
+        "stage": "Severe"
+      }
+    },
+    {
+      "name": "Cocker Spaniel - Initial Allergic Dermatosis",
+      "description": "Medium breed with early allergic condition",
+      "request": {
+        "breed": "Cocker Spaniel",
+        "age": 2,
+        "weight": 12.0,
+        "medical_history": "None",
+        "genetic_predispositions": "None",
+        "current_medications": "None",
+        "diet": "Balanced",
+        "lifestyle": "Outdoor",
+        "environment": "Humid",
+        "vaccination_status": "Up-to-date",
+        "neutering_status": "Not Neutered",
+        "living_conditions": "Single-pet",
+        "disease": "Hypersensitivity Allergic Dermatosis",
+        "stage": "Initial"
+      }
+    },
+    {
+      "name": "Young Puppy - Mild Fungal Infection",
+      "description": "Very young dog with mild fungal infection",
+      "request": {
+        "breed": "Labrador",
+        "age": 1,
+        "weight": 5.0,
+        "medical_history": "None",
+        "genetic_predispositions": "None",
+        "current_medications": "None",
+        "diet": "Balanced",
+        "lifestyle": "Indoor",
+        "environment": "Temperate",
+        "vaccination_status": "Not Up-to-date",
+        "neutering_status": "Not Neutered",
+        "living_conditions": "Multi-pet",
+        "disease": "Fungal Infections",
+        "stage": "Mild"
+      }
+    },
+    {
+      "name": "Senior Dog - Severe Staph Infection",
+      "description": "Older dog with severe bacterial infection",
+      "request": {
+        "breed": "German Shepherd",
+        "age": 12,
+        "weight": 28.0,
+        "medical_history": "Skin allergies",
+        "genetic_predispositions": "Dermatitis",
+        "current_medications": "Beta-blockers",
+        "diet": "Low-sodium",
+        "lifestyle": "Indoor",
+        "environment": "Cold",
+        "vaccination_status": "Up-to-date",
+        "neutering_status": "Neutered",
+        "living_conditions": "Single-pet",
+        "disease": "Staph Infection",
+        "stage": "Severe"
+      }
+    },
+    {
+      "name": "Large Breed - Moderate Bacterial Dermatosis",
+      "description": "Large breed with moderate bacterial condition",
+      "request": {
+        "breed": "Golden Retriever",
+        "age": 6,
+        "weight": 32.0,
+        "medical_history": "Eye infections",
+        "genetic_predispositions": "None",
+        "current_medications": "Heartworm Preventative",
+        "diet": "High-protein",
+        "lifestyle": "Active",
+        "environment": "Temperate",
+        "vaccination_status": "Up-to-date",
+        "neutering_status": "Neutered",
+        "living_conditions": "Multi-pet",
+        "disease": "Bacterial Dermatosis",
+        "stage": "Moderate"
+      }
+    }
+  ],
+  "batch_request_example": {
+    "name": "Batch Prediction - Multiple Dogs",
+    "description": "Test multiple dog profiles at once",
+    "request": {
+      "profiles": [
+        {
+          "breed": "Chihuahua",
+          "age": 6,
+          "weight": 2.8,
+          "medical_history": "None",
+          "genetic_predispositions": "None",
+          "current_medications": "None",
+          "diet": "Balanced",
+          "lifestyle": "Indoor",
+          "environment": "Temperate",
+          "vaccination_status": "Not Up-to-date",
+          "neutering_status": "Neutered",
+          "living_conditions": "Multi-pet",
+          "disease": "Hypersensitivity Allergic Dermatosis",
+          "stage": "Severe"
+        },
+        {
+          "breed": "Labrador",
+          "age": 5,
+          "weight": 25.0,
+          "medical_history": "Skin allergies",
+          "genetic_predispositions": "Dermatitis",
+          "current_medications": "None",
+          "diet": "Grain-free",
+          "lifestyle": "Active",
+          "environment": "Temperate",
+          "vaccination_status": "Up-to-date",
+          "neutering_status": "Neutered",
+          "living_conditions": "Single-pet",
+          "disease": "Fungal Infections",
+          "stage": "Initial"
+        },
+        {
+          "breed": "German Shepherd",
+          "age": 8,
+          "weight": 30.0,
+          "medical_history": "Eye infections",
+          "genetic_predispositions": "None",
+          "current_medications": "Heartworm Preventative",
+          "diet": "High-protein",
+          "lifestyle": "Outdoor",
+          "environment": "Cold",
+          "vaccination_status": "Up-to-date",
+          "neutering_status": "Not Neutered",
+          "living_conditions": "Multi-pet",
+          "disease": "Staph Infection",
+          "stage": "Moderate"
+        }
+      ]
+    }
+  }
+}
+

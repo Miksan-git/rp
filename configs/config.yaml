@@ -1,0 +1,82 @@
+data:
+  dataset_path: Enhanced_Dog_Treatment_Dataset_IMPROVED.csv
+  train_split: 0.7
+  val_split: 0.15
+  test_split: 0.15
+  random_seed: 42
+features:
+  categorical:
+  - Breed
+  - Medical History
+  - Genetic Predispositions
+  - Current Medications
+  - Diet
+  - Lifestyle
+  - Environment
+  - Vaccination Status
+  - Neutering Status
+  - Living Conditions
+  - Disease
+  - Stage
+  - Previous Treatment
+  - Previous Treatment Response
+  - Drug Allergies
+  - Drug Interaction Risk
+  - Cost Category
+  - Availability Status
+  numerical:
+  - Age
+  - Weight
+  - Severity Score
+  - Symptom Count
+  - Treatments Tried Count
+  targets:
+    conventional_treatment: Conventional Treatment
+    natural_remedies: Natural Remedies
+model:
+  embedding_dim: 64
+  hidden_layers:
+  - 512
+  - 256
+  - 128
+  - 64
+  dropout_rate: 0.4
+  activation: relu
+  conventional_head:
+    hidden_dim: 128
+    dropout: 0.3
+  natural_head:
+    hidden_dim: 64
+    dropout: 0.2
+training:
+  batch_size: 128
+  num_epochs: 100
+  learning_rate: 0.0005
+  weight_decay: 0.0001
+  early_stopping_patience: 25
+  early_stopping_min_delta: 0.0001
+  use_class_weights: true
+  use_focal_loss: true
+  focal_gamma: 5.0
+  label_smoothing: 0.1
+  conventional_loss_weight: 5.0
+  natural_loss_weight: 1.0
+evaluation:
+  metrics:
+    conventional:
+    - accuracy
+    - f1_macro
+    - precision_macro
+    - recall_macro
+    - confusion_matrix
+    natural:
+    - hamming_loss
+    - f1_macro
+    - f1_micro
+    - precision_macro
+    - recall_macro
+    - jaccard_score
+paths:
+  model_save_dir: models/saved
+  logs_dir: logs
+  results_dir: results
